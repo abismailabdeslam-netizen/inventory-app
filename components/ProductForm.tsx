@@ -1,6 +1,6 @@
 import { useState, useCallback } from 'react'
 import { useDropzone } from 'react-dropzone'
-import { databases, storage, DB_ID, COLLECTION_ID, BUCKET_ID, ID, Product } from '../lib/appwrite'
+import { databases, storage, DB_ID, COLLECTION_ID, BUCKET_ID, ID, Product, parseSecondaryImages } from '../lib/appwrite'
 import { useLang } from '../lib/LangContext'
 import { getImageUrl } from '../pages/index'
 
@@ -34,7 +34,7 @@ export default function ProductForm({ product, onSuccess, onCancel, showToast }:
       : null
   )
   const [secondaryImages, setSecondaryImages] = useState<ImageFile[]>(
-    (product?.secondary_images || []).map(fid => ({
+    parseSecondaryImages(product?.secondary_images).map(fid => ({
       preview: getImageUrl(fid),
       fileId: fid,
       isExisting: true,
@@ -86,7 +86,7 @@ export default function ProductForm({ product, onSuccess, onCancel, showToast }:
         description_ar: descAr,
         description_fr: descFr,
         main_image: mainFileId,
-        secondary_images: secFileIds,
+        secondary_images: JSON.stringify(secFileIds),
       }
 
       if (isEdit && product) {

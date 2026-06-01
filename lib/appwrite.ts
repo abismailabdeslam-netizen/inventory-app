@@ -20,7 +20,14 @@ export type Product = {
   description_ar: string
   description_fr: string
   main_image: string
-  secondary_images: string[]
+  secondary_images: string   // stored as JSON string in Appwrite
   $createdAt: string
   $updatedAt: string
+}
+
+// Helper to parse secondary_images safely
+export function parseSecondaryImages(val: string | string[] | null | undefined): string[] {
+  if (!val) return []
+  if (Array.isArray(val)) return val
+  try { return JSON.parse(val) } catch { return [] }
 }

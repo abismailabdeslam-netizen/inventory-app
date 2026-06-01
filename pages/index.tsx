@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import Head from 'next/head'
-import { databases, DB_ID, COLLECTION_ID, storage, BUCKET_ID, Product, Query } from '../lib/appwrite'
+import { databases, DB_ID, COLLECTION_ID, storage, BUCKET_ID, Product, Query, parseSecondaryImages } from '../lib/appwrite'
 import { useLang } from '../lib/LangContext'
 import Navbar from '../components/Navbar'
 import ProductModal from '../components/ProductModal'
@@ -118,7 +118,7 @@ export default function Home() {
                 const desc = getDesc(product)
                 const isLongDesc = (desc || '').length > 120
                 const displayDesc = isLongDesc ? desc.slice(0, 120) + '...' : desc
-                const secondaryCount = (product.secondary_images || []).length
+                const secondaryCount = parseSecondaryImages(product.secondary_images).length
                 const mainImgUrl = getImageUrl(product.main_image)
 
                 return (

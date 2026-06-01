@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { Product } from '../lib/appwrite'
+import { Product, parseSecondaryImages } from '../lib/appwrite'
 import { useLang } from '../lib/LangContext'
 import { getImageUrl } from '../pages/index'
 
@@ -15,7 +15,7 @@ export default function ProductModal({ product, onClose }: ProductModalProps) {
 
   const allImageIds = [
     ...(product.main_image ? [product.main_image] : []),
-    ...(product.secondary_images || []),
+    ...parseSecondaryImages(product.secondary_images),
   ]
   const allImageUrls = allImageIds.map(getImageUrl)
 
